@@ -59,7 +59,11 @@ const preguntarDatos = () => {
 
 // funcion para mostrar los socios por consola
 const mostrarSocios = () => {
-    return socios;
+    const sociosNombre = socios.forEach(socio => console.log(`
+    Nombre: ${socio.nombre}
+    Cuota al Dia: ${socio.cuotaAlDia}
+    `));
+    return sociosNombre;
 };
 
 //funcion para agregar
@@ -149,7 +153,7 @@ const menu = () => {
             `);
     switch (inicioPrompt) {
         case "1":
-            console.log(mostrarSocios());
+            mostrarSocios();
             break;
         case "2":
             console.log(agregarSocio());
