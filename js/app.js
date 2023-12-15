@@ -1,5 +1,4 @@
 
-
 class Socio {
 
     //static contadorId = 1;
@@ -29,14 +28,13 @@ class Socio {
 // variable contador usada para generar Id
 let contadorId = 0;
 
-
 // array con objeto socio instanciado
 const socios = [
-    new Socio("Esteban Sanchez", 40, 87, 1.78, true),
-    new Socio("Ricado Perez", 30, 76, 1.82, false),
-    new Socio("Juan Perez", 27, 80, 1.79, true),
+    new Socio("Franco Armani", 37, 87, 1.88, true),
+    new Socio("Emiliano Martinez", 31, 87, 1.96, false),
+    new Socio("Pipa Benedeto", 33, 75, 1.75, false),
+    new Socio("Lionel Messi", 36, 72, 1.7, true),
 ];
-
 
 // funcion  para evitar repetir codigo al preguntar datos
 const preguntarDatos = () => {
@@ -47,27 +45,31 @@ const preguntarDatos = () => {
     edad = parseInt(prompt("Ingrese edad"));
     peso = parseInt(prompt("Ingrese peso en Kilogramos"));
     altura = parseFloat(prompt("Ingrese altura en metros"));
-    cuota = parseFloat(confirm("El cliente abona cuota?"));
- 
-    datos.push(nombre, edad, altura, peso, cuota);
+
+    if (nombre.length === 0) {
+        alert("escribe un nombre valido");
+        nombre = prompt("Ingrese el nombre");
+    }
+
+    datos.push(nombre, edad, peso, altura);
 
     //otra forma seria desestructurar el obj y return {nombre, edad, peso, altura}
     return datos; //retorna un array 
-}
+};
 
 // funcion para mostrar los socios por consola
 const mostrarSocios = () => {
-    console.log(socios);
+    return socios;
 };
-
 
 //funcion para agregar
 const agregarSocio = () => {
     //otra forma de hacerlo seria:
     // funcion preguntarDatos() devuelve un objeto const { nombre, edad, altura, peso } = preguntarDatos();
     preguntarDatos();
+    cuota = confirm("El cliente abona cuota?");
     socios.push(new Socio(nombre, edad, peso, altura, cuota));
-    console.log(socios);
+    return socios;
 };
 
 //funcion para editar datos
@@ -78,7 +80,7 @@ const editarDatos = (nombreEncontrado) => {
     nombreEncontrado.peso = nuevosDatos[2];
     nombreEncontrado.altura = nuevosDatos[3];
     alert("datos editados correctamente");
-    console.log(nombreEncontrado);
+    return nombreEncontrado;
 }
 //funcion para eliminar
 const eliminarSocio = (nombreEncontrado) => {
@@ -92,17 +94,26 @@ const eliminarSocio = (nombreEncontrado) => {
     }
     return socios;
 };
-
-
+// funcion para abonar ciota
+const abonarCuota = (nombreEncontrado) => {
+    const socioPaga = confirm("El cliente abona la cuota?");
+    if (socioPaga) {
+        nombreEncontrado.cuotaAlDia = socioPaga;
+        return nombreEncontrado;
+    }
+    return "se cancelo el pago";
+}
 
 //funcion para buscar
 const buscarSocio = () => {
     const nombreBuscado = prompt("Ingresa el nombre del socio que buscas");
 
     const nombreEncontrado = socios.find(socio => socio.nombre === nombreBuscado);
-    console.log(nombreEncontrado)
+    console.log(nombreEncontrado);
     if (nombreEncontrado) {
-        const opcion = prompt(`Que desea hacer: 
+        const opcion = prompt(`
+        Socio: ${nombreEncontrado.nombre} encontrado!
+        Que desea hacer: 
         1 - Abonar Cuota
         2 - Modificar Datos de Socio  
         3 - Eliminar Socio de la base
@@ -110,22 +121,22 @@ const buscarSocio = () => {
 
         switch (opcion) {
             case "1":
-                abonarCuota(nombreEncontrado);
+                console.log(abonarCuota(nombreEncontrado));
                 break;
             case "2":
-                editarDatos(nombreEncontrado);
-
+                console.log(editarDatos(nombreEncontrado));
                 break;
             case "3":
                 eliminarSocio(nombreEncontrado);
-                console.log(socios)
+                console.log(socios);
                 break;
             default:
-                console.log("entrada no valida")
+                console.log("entrada no valida");
                 break;
         }
     } else {
-        console.log("Socio no encontrado")
+        alert(`Socio: ${nombreBuscado} no encontrado`);
+        console.log("Socio no encontrado");
     }
 }
 
@@ -134,26 +145,25 @@ const menu = () => {
             1 - Mostrar Socios
             2 - Agregar Nuevo Socio
             3 - Buscar Socio
-            4 - Modificar Datos`);
+            4 - Salir
+            `);
     switch (inicioPrompt) {
         case "1":
-            mostrarSocios();
+            console.log(mostrarSocios());
             break;
         case "2":
-            agregarSocio();
+            console.log(agregarSocio());
             break;
         case "3":
             buscarSocio();
             break;
         case "4":
-            console.log("opcion 4")
-            break;
+            return;
         default:
             console.log("opcion no encontrada");
             break;
     };
 };
 
-
+menu();
 document.querySelector("#btn-menu").addEventListener("click", menu);
-
